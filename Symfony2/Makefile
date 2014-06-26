@@ -9,7 +9,7 @@ help:
 	@echo
 	@echo "\tTo install: make install"
 	@echo "\tTo reinstall: make reinstall"
-	@echo "\tTo deploy: make deploy
+	@echo "\tTo deploy: make deploy"
 	@echo "\tTo clear all caches: make clear"
 	@echo "\tTo build front-end: make integration"
 	@echo
