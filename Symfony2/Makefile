@@ -12,6 +12,7 @@ help:
 	@echo "\tTo deploy: make deploy"
 	@echo "\tTo clear all caches: make clear"
 	@echo "\tTo build front-end: make integration"
+	@echo "\tTo run tests: make tests"
 	@echo
 
 dropDb:
@@ -53,6 +54,9 @@ explainDeploy:
 	@echo "git pull origin master + update db schema + build integration + copy new assets + rebuild prod cache"
 	@echo "Note you can change the git remote repo username in .git/config"
 
+tests:
+	bin/behat --lang=fr  "@MyAppMyBundle"
+	phpunit
 done:
 	@echo
 	@echo "Done."
