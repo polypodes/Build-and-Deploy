@@ -19,3 +19,11 @@ me@myserver$~: make rollback
 ```
 
 ![structure](structure.png)
+
+## Related
+
+- [An introduction to GNU Make](http://www.gnu.org/software/make/manual/make.html#Introduction)
+
+## LICENSE
+
+MIT
