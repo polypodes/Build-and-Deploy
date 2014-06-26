@@ -30,7 +30,7 @@ Now everyone in your team can deploy. And rollback.
 
 - Keep the deployement simple & fast.
 - Use Make, available on UNIX / GNU Linux / FreeBSD / Mac OS X
-- Change your rules & tools, freely (switch from Grunt to Gulp to Whatever.js") without changing your deployement command: just `make deploy`.
+- Change your rules & tools, freely without changing your deployement command: just `make deploy`
 - Rollbacking is as simple as deploying: `make rollback`
 - In case of doubt: `make help`
 
