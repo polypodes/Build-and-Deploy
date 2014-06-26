@@ -22,6 +22,8 @@ me@myserver$~: make rollback
 
 Now everyone in your team can deploy. And rollback.
 
+## Production direcotries structure
+
 ![structure](structure.png)
 
 ### Simple philosophy
