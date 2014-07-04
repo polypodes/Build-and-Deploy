@@ -13,10 +13,17 @@ me@myserver$~: ./deploy.sh
 Even better:
 
 ```bash
-me@myserver$~: make install
+me@myserver$~: make release
+
+```
+
+And it's done.
+
+Working with your 'current' remain simple:
+
+```bash
 me@myserver$~: make update
 me@myserver$~: make check
-me@myserver$~: make deploy
 me@myserver$~: make rollback
 ```
 
