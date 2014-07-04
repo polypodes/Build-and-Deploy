@@ -33,6 +33,7 @@ Now everyone in your team can deploy. And rollback.
 ├── [me           2237]  Makefile
 ├── [me             55]  current -> releases/2014-07-04--16-23-10
 ├── [me             55]  old -> releases/2014-07-01--11-10-50
+├── [me            170]  releases
 └── [me            170]  uploads
 ➜  myServer
 ```
