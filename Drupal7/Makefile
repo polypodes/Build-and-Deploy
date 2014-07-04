@@ -27,7 +27,7 @@ all: check help
 # Specific tasks:
 
 check:
-	@test -d $(RELEASES) || mkdir -p $(RELEASES) && chmod -R 775 $(RELEASES)
+	@test -d $(RELEASES) || mkdir -p $(RELEASES)
 
 permissions:
 	@chmod -R 775 $(CURRENT)
