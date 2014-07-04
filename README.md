@@ -53,7 +53,7 @@ Now everyone in your team can deploy. And rollback.
     ├── [me            340]  2014-05-02--14-25-51
     └── [me            340]  2014-07-04--16-23-10                <-- "current"
         ├── [me            68]  src
-        └── [me            68]  web
+        └── [me           136]  web
             └── [me          1289]  index.php
             └── [me            16]  uploads -> ../../../uploads  <-- (shared)
 ➜  myServer
