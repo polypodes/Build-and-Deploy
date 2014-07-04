@@ -2,6 +2,16 @@
 # Makefile
 # Les Polypodes, 2014-06-25 12:44
 
+# Usage:
+
+# me@myserver$~: make help
+# me@myserver$~: make release
+# me@myserver$~: make rollback
+# me@myserver$~: make update
+# me@myserver$~: make check
+# etc.
+
+
 
 ############################################################################
 # Vars
