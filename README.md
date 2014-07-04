@@ -7,17 +7,13 @@ Deployers: Shell scripts &amp; Makefiles to deploy web apps on a released-based 
 ## Deployment made simple
 
 ```bash
-me@myserver$~: ./deploy.sh
-```
-
-Even better:
-
-```bash
 me@myserver$~: make release
 
 ```
 
 And it's done.
+
+### Classic workflow: release / scream / rollback / breath...
 
 Working with your 'current' remain simple:
 
