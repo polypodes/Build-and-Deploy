@@ -21,13 +21,14 @@
 PWD := $(shell pwd)
 RELEASES := $(PWD)/releases
 CURRENT := $(PWD)/current
+OLD := $(PWD)/old
 NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
 NEW := $(RELEASES)/NEW
 REPO := "https://github.com/polypodes/Deploy.git"
 BRANCH := 'master'
 # Linux user & group
-WWWUSER := ronan
-WWWGROUP := wheel
+WWWUSER := myLinuxUser
+WWWGROUP := myLinuxGroup
 # Colors
 YELLOW := $(shell tput bold ; tput setaf 3)
 GREEN := $(shell tput bold ; tput setaf 2)
@@ -47,9 +48,11 @@ permissions:
 
 switch:
 	@echo "Switching actual 'current' & 'old' symlinks using the new release..."
-	@if [ -a current ]; then mv current old; fi;
+	@rm $(OLD);
+	@mv $(CURRENT) $(OLD);
 	@mv $(NEW) $(RELEASES)/$(NOW)
 	@ln -s $(RELEASES)/$(NOW) $(CURRENT)
+	@cp -R $(OLD)/sites/default/files/* $(CURRENT)/sites/default/files/
 
 rollback:
 	@mv current rollbacked
@@ -86,6 +89,7 @@ help:
 release: check
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
+	@cd $(NEW) && git config core.filemode false && cd $(PWD)
 	@$(MAKE) switch
 	@$(MAKE) clear
 	@$(MAKE) done
