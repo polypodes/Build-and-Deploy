@@ -1,27 +1,41 @@
 #
-# sf2 Makefile v1.1
-# ronan, 2014-08-065 15:30
-#
+# Makefile
+# Les Polypodes, 2014-06-25 12:44
+# Licence: MIT
+# Source: https://github.com/polypodes/Deploy/blob/master/Drupal7/Makefile
 
+# Usage:
+
+# me@myserver$~: make help
+# me@myserver$~: make release
+# me@myserver$~: make rollback
+# me@myserver$~: make update
+# me@myserver$~: make check
+# etc.
+
+
+
+############################################################################
+# Vars
+
+PWD := $(shell pwd)
+NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
+REPO := "https://github.com/..."
+BRANCH := 'master'
+# Colors
+YELLOW := $(shell tput bold ; tput setaf 3)
+GREEN := $(shell tput bold ; tput setaf 2)
+RESETC := $(shell tput sgr0)
+
+
+############################################################################
+# Mandatory tasks:
 vendor/autoload.php:
 	composer install --optimize-autoloader
 
-.PHONY: help
-help:
-	@echo
-	@echo "Available tasks:"
-	@echo
-	@echo "\tTo install: make install"
-	@echo "\tTo reinstall: make reinstall"
-	@echo "\tTo deploy: make deploy"
-	@echo "\tTo clear all caches: make clear"
-	@echo "\tTo run tests: make tests"
-	@echo
+############################################################################
+# Specific, project-related sf2 tasks:
 
-.PHONY: pull
-pull:
-	@git pull origin master
-	@composer install --optimize-autoloader
 
 .PHONY: integration
 integration:
@@ -30,21 +44,54 @@ integration:
 	@gulp build
 	@cd ../
 
+.PHONY: data	
+data: vendor/autoload.php
+	@echo "Install initial datas..."
+	@./console dbal:data:initialize --purge
+
+.PHONY: fixtures	
+fixtures: vendor/autoload.php
+	@echo "Install fixtures in db..."
+	@./console dbal:fixtures:load --purge
+
+############################################################################
+# Generic sf2 tasks:
+
+.PHONY: help
+help:
+	@echo
+	@echo "${GREEN}Usual tasks:${RESETC}"
+	@echo
+	@echo "\tTo install: make install"
+	@echo "\tTo reinstall: make reinstall"
+	
+	@echo "${GREEN}Other specific tasks:${RESETC}"
+	@echo
+	@echo "\tTo deploy: make deploy"
+	@echo "\tTo clear all caches: make clear"
+	@echo "\tTo run tests: make tests"
+	@echo
+	
+.PHONY: pull
+pull:
+	@git pull origin $(BRANCH)
+
+
 .PHONY: dropDb
-dropDb:
+dropDb: vendor/autoload.php
 	@echo
 	@echo "Drop database..."
 	@php app/console doctrine:database:drop --force
 
 .PHONY: createDb
-createDb:
+createDb: vendor/autoload.php
 	@echo
 	@echo "Create database..."
 	@php app/console doctrine:database:create
 	@php app/console doctrine:schema:update --force
 
 .PHONY: schemaDb
-schemaDb:
+schemaDb: vendor/autoload.php
 	@echo
 	@echo "Configure database schema..."
 	@php app/console doctrine:schema:update --force
@@ -55,21 +102,13 @@ assets:
 	@php app/console assets:install --symlink
 
 .PHONY: clear
-clear:
+clear: vendor/autoload.php
 	@echo
 	@echo "Resetting caches..."
 	@php app/console cache:clear --env=prod --no-debug
 	@php app/console cache:clear --env=dev
 
-data:
-	@echo "Install initial datas..."
-	@./console dbal:data:initialize --purge
-	
-fixtures:
-	@echo "Install fixtures in db..."
-	@./console dbal:fixtures:load --purge
-
-assets:
+assets: vendor/autoload.php
 	@php app/console assets:install --symlink
 
 explain:
@@ -77,24 +116,29 @@ explain:
 	@echo "Note you can change the git remote repo username in .git/config"
 
 .PHONY: behavior
-behavior:
+behavior: vendor/autoload.php
 	@echo "Run behavior tests..."
 	bin/behat --lang=fr  "@AcmeDemoBundle"
 
 .PHONY: unit
-unit:
+unit: vendor/autoload.php
 	@echo "Run unit tests..."
 	@php bin/phpunit -c build/phpunit.xml -v
 
 .PHONY: codecoverage
-codecoverage:
+codecoverage: vendor/autoload.php
 	@echo "Run coverage tests..."
 	@bin/phpunit -c build/phpunit.xml -v --coverage-html ./build/codecoverage
 
 .PHONY: continuous
-continuous:
+continuous: vendor/autoload.php
 	@echo "Starting continuous tests..."
 	@while true; do bin/phpunit -c build/phpunit.xml -v; done
+
+.PHONY: sniff
+sniff: vendor/autoload.php
+	vendor/bin/phpcs --standard=PSR2 src -n
+
 
 .PHONY: check
 check:
@@ -113,7 +157,7 @@ check:
 
 done:
 	@echo
-	@echo "Done."
+	@echo "${GREEN}Done.${RESETC}"
 
 # Tasks sets:
 
