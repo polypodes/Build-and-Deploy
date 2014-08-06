@@ -1,8 +1,12 @@
 #
-# Makefile
-# ronan, 2014-03-05 10:40
+# sf2 Makefile v1.1
+# ronan, 2014-08-065 15:30
 #
 
+vendor/autoload.php:
+	composer install --optimize-autoloader
+
+.PHONY: help
 help:
 	@echo
 	@echo "Available tasks:"
@@ -14,70 +18,87 @@ help:
 	@echo "\tTo run tests: make tests"
 	@echo
 
-drop:
-	@echo
-	@echo "Drop database..."
-	@php app/console doctrine:database:drop --force
+.PHONY: pull
+pull:
+	@git pull origin master
+	@composer install --optimize-autoloader
 
-db:
-	@echo
-	@echo "Create database..."
-	@php app/console doctrine:database:create
-
-schema:
-	@echo
-	@echo "Update database..."
-	@php app/console doctrine:schema:update --force
-
-clear:
-	@echo
-	@echo "Resetting cache..."
-	@php app/console cache:clear --env=prod --no-debug
-	@php app/console cache:clear --env=dev
-
+.PHONY: integration
 integration:
 	@echo
 	@cd integration
 	@gulp build
 	@cd ../
 
-pull:
-	@git pull origin master
-	@composer install --optimize-autoloader
+.PHONY: dropDb
+dropDb:
+	@echo
+	@echo "Drop database..."
+	@php app/console doctrine:database:drop --force
+
+.PHONY: createDb
+createDb:
+	@echo
+	@echo "Create database..."
+	@php app/console doctrine:database:create
+	@php app/console doctrine:schema:update --force
+
+.PHONY: schemaDb
+schemaDb:
+	@echo
+	@echo "Configure database schema..."
+	@php app/console doctrine:schema:update --force
+
+.PHONY: assets
+assets:
+    @echo "\nPublishing assets..."
+	@php app/console assets:install --symlink
+
+.PHONY: clear
+clear:
+	@echo
+	@echo "Resetting caches..."
+	@php app/console cache:clear --env=prod --no-debug
+	@php app/console cache:clear --env=dev
 
 data:
 	@echo "Install initial datas..."
 	@./console dbal:data:initialize --purge
 	
+fixtures:
+	@echo "Install fixtures in db..."
+	@./console dbal:fixtures:load --purge
+
 assets:
 	@php app/console assets:install --symlink
 
 explain:
 	@echo "git pull origin master + update db schema + build integration + copy new assets + rebuild prod cache"
 	@echo "Note you can change the git remote repo username in .git/config"
-	
-fixtures:
-	@echo "Install fixtures in db..."
-	@./console dbal:fixtures:load --purge
 
-behaviour:
-	@echo "Run behaviour tests"
-	bin/behat --lang=fr  "@MyAppMyBundle"
-	phpunit
+.PHONY: behavior
+behavior:
+	@echo "Run behavior tests..."
+	bin/behat --lang=fr  "@AcmeDemoBundle"
 
+.PHONY: unit
 unit:
-	@echo "Run unit tests"
-	@php ./phpunit -c build/phpunit.xml -v
+	@echo "Run unit tests..."
+	@php bin/phpunit -c build/phpunit.xml -v
 
+.PHONY: codecoverage
 codecoverage:
-	@echo "Run coverage tests"
-	@./phpunit -c build/phpunit.xml -v --coverage-html ./build/codecoverage
+	@echo "Run coverage tests..."
+	@bin/phpunit -c build/phpunit.xml -v --coverage-html ./build/codecoverage
 
+.PHONY: continuous
 continuous:
-	@echo "Starting continuous integration..."
-	@while true; do ./phpunit -c build/phpunit.xml -v; done
+	@echo "Starting continuous tests..."
+	@while true; do bin/phpunit -c build/phpunit.xml -v; done
 
+.PHONY: check
 check:
+	@echo "Starting code check-up..."
 	# phploc: https://github.com/sebastianbergmann/phploc
 	# phpmd: https://github.com/phpmd/phpmd
 	# phpcpd: https://github.com/sebastianbergmann/phpcpd
@@ -96,9 +117,21 @@ done:
 
 # Tasks sets:
 
-install: pull db schema data assets clear done
-reinstall: drop install
-tests: reinstall fixtures behaviour unit
+.PHONY: prepareDb
+prepareDb: createDb schemaDb
+
+.PHONY: purgeDb
+purgeDb: dropDb createDb schemaDb
+
+.PHONY: install
+install: prepareDb data assets clear done
+
+.PHONY: reinstall
+reinstall: dropDb install
+
+.PHONY: tests
+tests: reinstall fixtures behavior unit codecoverage
+
 deploy: explain install done
 
 # vim:ft=make
