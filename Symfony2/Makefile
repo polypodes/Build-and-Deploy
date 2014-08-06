@@ -19,14 +19,16 @@
 # Vars
 
 # some lines may be useless for now, but these are nice tricks:
-PWD := $(shell pwd)
-NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
-REPO := "https://github.com/..."
-BRANCH := 'master'
+PWD         := $(shell pwd)
+VENDOR_PATH := $(PWD)/vendor
+BIN_PATH    := $(PWD)/bin
+NOW         := $(shell date +%Y-%m-%d--%H-%M-%S)
+REPO        := "https://github.com/..."
+BRANCH      := 'master'
 # Colors
-YELLOW := $(shell tput bold ; tput setaf 3)
-GREEN := $(shell tput bold ; tput setaf 2)
-RESETC := $(shell tput sgr0)
+YELLOW      := $(shell tput bold ; tput setaf 3)
+GREEN       := $(shell tput bold ; tput setaf 2)
+RESETC      := $(shell tput sgr0)
 
 
 ############################################################################
