@@ -153,7 +153,15 @@ check:
 	@phpmd src text codesize,unusedcode,naming
 	@phpcpd src
 	@pdepend src
-	@php-cs-fixer fix src --dry-run	
+	@php-cs-fixer fix src --dry-run
+	
+.PHONY: deploy
+deploy: vendor/autoload.php
+	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
+	@echo "Note you can change the git remote repo username in .git/config"
+	@git pull origin $(BRANCH)
+	@$(MAKE) schemaDb
+	@php app/console cache:clear --env=prod --no-debug
 
 done:
 	@echo
