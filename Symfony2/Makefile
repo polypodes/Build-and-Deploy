@@ -36,7 +36,6 @@ vendor/autoload.php:
 ############################################################################
 # Specific, project-related sf2 tasks:
 
-
 .PHONY: integration
 integration:
 	@echo
