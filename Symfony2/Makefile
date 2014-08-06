@@ -1,16 +1,16 @@
 #
 # Makefile
-# Les Polypodes, 2014-06-25 12:44
+# Les Polypodes, 2014-08-06 15:41
 # Licence: MIT
-# Source: https://github.com/polypodes/Deploy/blob/master/Drupal7/Makefile
+# Source: https://github.com/polypodes/Deploy/blob/master/Symfony2/Makefile
 
 # Usage:
 
 # me@myserver$~: make help
-# me@myserver$~: make release
-# me@myserver$~: make rollback
-# me@myserver$~: make update
-# me@myserver$~: make check
+# me@myserver$~: make pull
+# me@myserver$~: make install
+# me@myserver$~: make sniff
+# me@myserver$~: make codecoverage
 # etc.
 
 
