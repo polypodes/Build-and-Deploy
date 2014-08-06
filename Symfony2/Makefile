@@ -108,9 +108,6 @@ clear: vendor/autoload.php
 	@php app/console cache:clear --env=prod --no-debug
 	@php app/console cache:clear --env=dev
 
-assets: vendor/autoload.php
-	@php app/console assets:install --symlink
-
 explain:
 	@echo "git pull origin master + update db schema + build integration + copy new assets + rebuild prod cache"
 	@echo "Note you can change the git remote repo username in .git/config"
@@ -137,7 +134,7 @@ continuous: vendor/autoload.php
 
 .PHONY: sniff
 sniff: vendor/autoload.php
-	vendor/bin/phpcs --standard=PSR2 src -n
+	bin/phpcs --standard=PSR2 src -n
 
 
 .PHONY: check
