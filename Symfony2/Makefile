@@ -98,7 +98,7 @@ schemaDb: vendor/autoload.php
 
 .PHONY: assets
 assets:
-    @echo "\nPublishing assets..."
+	@echo "\nPublishing assets..."
 	@php app/console assets:install --symlink
 
 .PHONY: clear
