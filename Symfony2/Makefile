@@ -18,6 +18,7 @@
 ############################################################################
 # Vars
 
+# some lines may be useless for now, but these are nice tricks:
 PWD := $(shell pwd)
 NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
 REPO := "https://github.com/..."
