@@ -13,8 +13,6 @@
 # me@myserver$~: make codecoverage
 # etc.
 
-
-
 ############################################################################
 # Vars
 
@@ -30,7 +28,6 @@ YELLOW      := $(shell tput bold ; tput setaf 3)
 GREEN       := $(shell tput bold ; tput setaf 2)
 RESETC      := $(shell tput sgr0)
 
-
 ############################################################################
 # Mandatory tasks:
 vendor/autoload.php:
@@ -39,19 +36,16 @@ vendor/autoload.php:
 ############################################################################
 # Specific, project-related sf2 tasks:
 
-.PHONY: integration
 integration:
 	@echo
 	@cd integration
 	@gulp build
 	@cd ../
 
-.PHONY: data	
 data: vendor/autoload.php
 	@echo "Install initial datas..."
 	@./console dbal:data:initialize --purge
 
-.PHONY: fixtures	
 fixtures: vendor/autoload.php
 	@echo "Install fixtures in db..."
 	@./console dbal:fixtures:load --purge
@@ -59,7 +53,6 @@ fixtures: vendor/autoload.php
 ############################################################################
 # Generic sf2 tasks:
 
-.PHONY: help
 help:
 	@echo
 	@echo "${GREEN}Usual tasks:${RESETC}"
@@ -73,37 +66,36 @@ help:
 	@echo "\tTo clear all caches: make clear"
 	@echo "\tTo run tests: make tests"
 	@echo
+
+check:
+	@php app/check.php
+
+all: vendor/autoload.php check help
 	
-.PHONY: pull
 pull:
 	@git pull origin $(BRANCH)
 
 
-.PHONY: dropDb
 dropDb: vendor/autoload.php
 	@echo
 	@echo "Drop database..."
 	@php app/console doctrine:database:drop --force
 
-.PHONY: createDb
 createDb: vendor/autoload.php
 	@echo
 	@echo "Create database..."
 	@php app/console doctrine:database:create
 	@php app/console doctrine:schema:update --force
 
-.PHONY: schemaDb
 schemaDb: vendor/autoload.php
 	@echo
 	@echo "Configure database schema..."
 	@php app/console doctrine:schema:update --force
 
-.PHONY: assets
 assets:
 	@echo "\nPublishing assets..."
 	@php app/console assets:install --symlink
 
-.PHONY: clear
 clear: vendor/autoload.php
 	@echo
 	@echo "Resetting caches..."
@@ -114,33 +106,26 @@ explain:
 	@echo "git pull origin master + update db schema + build integration + copy new assets + rebuild prod cache"
 	@echo "Note you can change the git remote repo username in .git/config"
 
-.PHONY: behavior
 behavior: vendor/autoload.php
 	@echo "Run behavior tests..."
 	bin/behat --lang=fr  "@AcmeDemoBundle"
 
-.PHONY: unit
 unit: vendor/autoload.php
 	@echo "Run unit tests..."
 	@php bin/phpunit -c build/phpunit.xml -v
 
-.PHONY: codecoverage
 codecoverage: vendor/autoload.php
 	@echo "Run coverage tests..."
 	@bin/phpunit -c build/phpunit.xml -v --coverage-html ./build/codecoverage
 
-.PHONY: continuous
 continuous: vendor/autoload.php
 	@echo "Starting continuous tests..."
 	@while true; do bin/phpunit -c build/phpunit.xml -v; done
 
-.PHONY: sniff
 sniff: vendor/autoload.php
 	bin/phpcs --standard=PSR2 src -n
 
-
-.PHONY: check
-check:
+quality:
 	@echo "Starting code check-up..."
 	# phploc: https://github.com/sebastianbergmann/phploc
 	# phpmd: https://github.com/phpmd/phpmd
@@ -153,8 +138,7 @@ check:
 	@phpcpd src
 	@pdepend src
 	@php-cs-fixer fix src --dry-run
-	
-.PHONY: deploy
+
 deploy: vendor/autoload.php
 	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
 	@echo "Note you can change the git remote repo username in .git/config"
@@ -168,21 +152,26 @@ done:
 
 # Tasks sets:
 
-.PHONY: prepareDb
+all: vendor/autoload.php check
+
 prepareDb: createDb schemaDb
 
-.PHONY: purgeDb
 purgeDb: dropDb createDb schemaDb
 
-.PHONY: install
 install: prepareDb data assets clear done
 
-.PHONY: reinstall
 reinstall: dropDb install
 
-.PHONY: tests
 tests: reinstall fixtures behavior unit codecoverage
 
 deploy: explain install done
 
+
+############################################################################
+# .PHONY tasks list
+
+.PHONY: integration data fixtures help check all pull dropDb createDb
+.PHONY: schemaDb assets clear explain behavior unit codecoverage 
+.PHONY: continuous sniff check quality deploy done prepareDb purgeDb
+.PHONY: install reinstall test deploy
 # vim:ft=make
