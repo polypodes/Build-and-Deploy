@@ -101,6 +101,6 @@ update: check
 	@$(MAKE) done
 
 
-
+.PHONY: all check permissions switch rollback clear done hellp release update
 # vim:ft=make
 #
