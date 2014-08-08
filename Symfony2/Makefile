@@ -172,6 +172,6 @@ deploy: explain install done
 
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
-.PHONY: continuous sniff check quality deploy done prepareDb purgeDb
+.PHONY: continuous sniff quality deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy
 # vim:ft=make
