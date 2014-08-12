@@ -126,7 +126,7 @@ sniff: vendor/autoload.php
 	bin/phpcs --standard=PSR2 src -n
 
 dry-fix:
-    @php-cs-fixer fix . --config=sf23 --dry-run -vv
+	@bin/php-cs-fixer fix . --config=sf23 --dry-run -vv
 
 quality:
 	@echo "Starting code check-up..."
