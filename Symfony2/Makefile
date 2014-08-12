@@ -125,6 +125,9 @@ continuous: vendor/autoload.php
 sniff: vendor/autoload.php
 	bin/phpcs --standard=PSR2 src -n
 
+dry-fix:
+    @php-cs-fixer fix . --config=sf23 --dry-run -vv
+
 quality:
 	@echo "Starting code check-up..."
 	# phploc: https://github.com/sebastianbergmann/phploc
@@ -172,6 +175,6 @@ deploy: explain install done
 
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
-.PHONY: continuous sniff quality deploy done prepareDb purgeDb
+.PHONY: continuous sniff dry-fix quality deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy
 # vim:ft=make
