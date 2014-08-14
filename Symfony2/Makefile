@@ -30,8 +30,16 @@ RESETC      := $(shell tput sgr0)
 
 ############################################################################
 # Mandatory tasks:
+
+all: .git/hook/pre-commit vendor/autoload.php check help
+
 vendor/autoload.php:
+	composer self-update
 	composer install --optimize-autoloader
+
+.git/hook/pre-commit:
+	curl -o .git/hooks/pre-commit https://gist.githubusercontent.com/ronanguilloux/11f6a788358577474ab4/raw
+	chmod +x .git/hooks/pre-commit
 
 ############################################################################
 # Specific, project-related sf2 tasks:
@@ -69,8 +77,6 @@ help:
 
 check:
 	@php app/check.php
-
-all: vendor/autoload.php check help
 	
 pull:
 	@git pull origin $(BRANCH)
@@ -128,19 +134,16 @@ sniff: vendor/autoload.php
 dry-fix:
 	@bin/php-cs-fixer fix . --config=sf23 --dry-run -vv
 
-quality:
-	@echo "Starting code check-up..."
-	# phploc: https://github.com/sebastianbergmann/phploc
-	# phpmd: https://github.com/phpmd/phpmd
-	# phpcpd: https://github.com/sebastianbergmann/phpcpd
-	# pdepend: https://github.com/pdepend/pdepend
-	# php-cs-fixer: https://github.com/fabpot/PHP-CS-Fixer
-	@phploc src
-	@phpcs --standard=build/phpcs.xml src
-	@phpmd src text codesize,unusedcode,naming
-	@phpcpd src
-	@pdepend src
-	@php-cs-fixer fix src --dry-run
+#quality must remain quiet, as far as it's used in a pre-commit hook validation
+quality: sniff dry-fix
+
+# packagist-based dev tools to add to your composer.json. See http://phpqatools.org
+stats: quality
+	@echo "Some stats about code quality"
+	@bin/phploc src
+	@bin/pdepend src
+	@bin/phpcpd src
+	@bin/phpmd src text codesize,unusedcode
 
 deploy: vendor/autoload.php
 	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
@@ -148,6 +151,7 @@ deploy: vendor/autoload.php
 	@git pull origin $(BRANCH)
 	@$(MAKE) schemaDb
 	@php app/console cache:clear --env=prod --no-debug
+	@php app/console cache:clear --env=dev
 
 done:
 	@echo
@@ -175,6 +179,6 @@ deploy: explain install done
 
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
-.PHONY: continuous sniff dry-fix quality deploy done prepareDb purgeDb
+.PHONY: continuous sniff dry-fix quality stats deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy
 # vim:ft=make
