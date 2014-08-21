@@ -134,6 +134,9 @@ sniff: vendor/autoload.php
 dry-fix:
 	@bin/php-cs-fixer fix . --config=sf23 --dry-run -vv
 
+cs-fix:
+	@bin/php-cs-fixer fix . --config=sf23 -vv
+
 #quality must remain quiet, as far as it's used in a pre-commit hook validation
 quality: sniff dry-fix
 
@@ -179,6 +182,6 @@ deploy: explain install done
 
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
-.PHONY: continuous sniff dry-fix quality stats deploy done prepareDb purgeDb
+.PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy
 # vim:ft=make
