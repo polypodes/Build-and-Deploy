@@ -1,7 +1,12 @@
+BUILD
+=====
+
+a Makefile to build Symfony2-based web apps
+
 Deploy
 ======
 
-Deployers: Shell scripts &amp; Makefiles to deploy web apps on a released-based dirs structure
+a Makefile to deploy web apps on a released-based dirs structure
 
 
 ## Deployment made simple
