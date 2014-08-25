@@ -114,7 +114,7 @@ explain:
 
 behavior: vendor/autoload.php
 	@echo "Run behavior tests..."
-	bin/behat --lang=fr  "@AcmeDemoBundle"
+	@bin/behat --lang=fr  "@AcmeDemoBundle"
 
 unit: vendor/autoload.php
 	@echo "Run unit tests..."
@@ -129,7 +129,7 @@ continuous: vendor/autoload.php
 	@while true; do bin/phpunit -c build/phpunit.xml -v; done
 
 sniff: vendor/autoload.php
-	bin/phpcs --standard=PSR2 src -n
+	@bin/phpcs --standard=PSR2 src -n
 
 dry-fix:
 	@bin/php-cs-fixer fix . --config=sf23 --dry-run -vv
