@@ -1,12 +1,12 @@
 BUILD
 =====
 
-a Makefile to build Symfony2-based web apps
+a [Makefile to build](build/) Symfony2-based web apps
 
 Deploy
 ======
 
-a Makefile to deploy web apps on a released-based dirs structure
+a [Makefile to deploy](/deploy) web apps on a released-based dirs structure
 
 
 Simple philosophy
