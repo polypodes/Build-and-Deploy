@@ -26,7 +26,7 @@ To install an app locally, just configure the vars (git repo, etc.) then run fir
 me@myserver$~: make
 ```
 
-This create the mandatory folder structure (folders being ignored in your .gititgnore), check your app requirements againts the operating system, install your dependencies (cf. [composer](http://getcomposer.org) that create the `vendor/autoload.php` file) etc.  
+This creates the mandatory folder structure (folders being ignored in your .gititgnore), check your app requirements againts the operating system, install your dependencies (cf. [composer](http://getcomposer.org) that create the `vendor/autoload.php` file) etc.  
 
 and then
 
@@ -34,7 +34,7 @@ and then
 make install
 ```
 
-This create the database, its schema, add the basics data required by your application, etc.
+This creates the database, its schema, add the basics data required by your application, etc.
 
 
 ## No commit without a little quality check
