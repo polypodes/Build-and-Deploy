@@ -14,7 +14,7 @@ Simple philosophy
 
 - Keep the build/deployement simple & fast.
 - Use Make, available on UNIX / GNU Linux / FreeBSD / Mac OS X
-- Change your rules & tools, freely without changing your deployement command: just `make deploy`
+- And or change your rulesets & tools, freely without changing your build/deployement command: just `make`, as always
 - Rollbacking is as simple as deploying: `make rollback`
 - In case of doubt: `make help`
 
