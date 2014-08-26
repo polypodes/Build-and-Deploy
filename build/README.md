@@ -1,20 +1,32 @@
-# BUILDING easely with GNU make
+# BUILDING made simple
 
+
+```bash
+me@myserver$~: make
+me@myserver$~: make install
+```
+
+And it's done.
 
 ## Building the app using good old Makefile
 
-This Makefile is a damn simple Makefile-based build process: many Makefile tasks here are defined to help developers
-to build/rebuild their Symfony2-based web app easely, combining various mandatory operations, such as creating the db, its schema,
- adding fake fixtures data, run behavior/functional/unit tests, lint & checkstyle the code source, etc.
+
+Building apps may be traumatic for someone, in particular if your team does not feel comfortable with server-side apps. 
+
+The main purpose of this makefile is to drastically simplify the "building the app" experience of your webdesigner or other non-developper colleagues. Two simple commands is enough to see your app running locally on their machine.
+
+In addition to these two fondamental commands, a Makefile-based build process allow you to add many other tasks defined to help developers to build/rebuild their (Symfony2-based) web app easely, combining various mandatory operations, such as adding fake fixtures data, run behavior/functional/unit tests, lint & checkstyle the code source, etc.
 
 Makefile is a damn simple 1977 technology coming from C language developers toolbelt. Often imitated
-(Gulp, Grunt, Ant, Rake, Jake, Phake, etc.) but never equalled for configuring simple repetitive task sets.
+(Gulp, Grunt, Ant, Rake, Jake, Phake, etc.) but never equalled for configuring simple repetitive filesytem-centric task sets.
 
-To install an app locally, just configure the vars (git repo, etc.) then run
+To install an app locally, just configure the vars (git repo, etc.) then run first:
 
 ```bash
-make
+me@myserver$~: make
 ```
+
+This create the mandatory folder structure (folders being ignored in your .gititgnore), check your app requirements againts the operating system, install your dependencies (cf. [composer](http://getcomposer.org) that create the `vendor/autoload.php` file) etc.  
 
 and then
 
@@ -22,11 +34,12 @@ and then
 make install
 ```
 
+This create the database, its schema, add the basics data required by your application, etc.
+
 
 ## No commit without a little quality check
 
-If your source code is versioned using Git, this Makefile proposes an on-the-fly source code check attached to the git pre-commit action: it's called a _hook_,
-and the Makefile sets it up:
+If your source code is versioned using Git, this Makefile proposes an on-the-fly source code check attached to the git pre-commit action: it's called a _hook_, and the Makefile sets it up:
 
 ```
 .git/hook/pre-commit:
@@ -34,7 +47,7 @@ and the Makefile sets it up:
    	chmod +x .git/hooks/pre-commit
 ```
 
-So now each `git commit` command will first run this GIST file (now copied in your `git/hooks` dir) that will check your source
+Now each `git commit` command will first run this GIST file (now copied in your `git/hooks` dir) that will check your source
 code and deny/reject any commit attempd if your code remains ugly. You can add more check processes to this.
 
 Someone calls it 'quality facism'. Deal with it.
