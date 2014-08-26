@@ -7,10 +7,11 @@
 # Usage:
 
 # me@myserver$~: make help
-# me@myserver$~: make pull
 # me@myserver$~: make install
-# me@myserver$~: make sniff
-# me@myserver$~: make codecoverage
+# me@myserver$~: make reinstall
+# me@myserver$~: make update
+# me@myserver$~: make tests
+# me@myserver$~: make quality
 # etc.
 
 ############################################################################
@@ -34,12 +35,12 @@ RESETC      := $(shell tput sgr0)
 all: .git/hook/pre-commit vendor/autoload.php check help
 
 vendor/autoload.php:
-	composer self-update
-	composer install --optimize-autoloader
+	@composer self-update
+	@composer install --optimize-autoloader
 
 .git/hook/pre-commit:
-	curl -o .git/hooks/pre-commit https://gist.githubusercontent.com/ronanguilloux/11f6a788358577474ab4/raw
-	chmod +x .git/hooks/pre-commit
+	@curl -s -o .git/hooks/pre-commit https://gist.githubusercontent.com/ronanguilloux/11f6a788358577474ab4/raw
+	@chmod +x .git/hooks/pre-commit
 
 ############################################################################
 # Specific, project-related sf2 tasks:
@@ -62,18 +63,16 @@ fixtures: vendor/autoload.php
 # Generic sf2 tasks:
 
 help:
-	@echo
-	@echo "${GREEN}Usual tasks:${RESETC}"
-	@echo
-	@echo "\tTo install: make install"
-	@echo "\tTo reinstall: make reinstall"
-	
-	@echo "${GREEN}Other specific tasks:${RESETC}"
-	@echo
-	@echo "\tTo deploy: make deploy"
-	@echo "\tTo clear all caches: make clear"
-	@echo "\tTo run tests: make tests"
-	@echo
+	@echo "\n${GREEN}Usual tasks:${RESETC}\n"
+	@echo "\tTo install:\t\tmake (and then) make install"
+	@echo "\tTo update:\t\tmake update"
+	@echo "\tTo reinstall:\t\tmake reinstall (will erase all your datas)\n\n"
+
+	@echo "${GREEN}Other specific tasks:${RESETC}\n"
+	@echo "\tTo check code quality:\tmake quality"
+	@echo "\tTo fix code style:\tmake cs-fix"
+	@echo "\tTo clear all caches:\tmake clear"
+	@echo "\tTo run tests:\t\tmake tests (will erase all your datas)\n"
 
 check:
 	@php app/check.php
@@ -148,7 +147,7 @@ stats: quality
 	@bin/phpcpd src
 	@bin/phpmd src text codesize,unusedcode
 
-deploy: vendor/autoload.php
+update: vendor/autoload.php
 	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
 	@echo "Note you can change the git remote repo username in .git/config"
 	@git pull origin $(BRANCH)
@@ -183,5 +182,5 @@ deploy: explain install done
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
 .PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
-.PHONY: install reinstall test deploy
+.PHONY: install reinstall test deploy update
 # vim:ft=make
