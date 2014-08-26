@@ -1,7 +1,7 @@
 BUILD
 =====
 
-a [Makefile to build](build/) Symfony2-based web apps
+a [Makefile to build](build/) PHP, Composer-based web apps
 
 Deploy
 ======
