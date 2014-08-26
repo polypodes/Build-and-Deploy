@@ -55,8 +55,8 @@ switch:
 	@cp -R $(OLD)/sites/default/files/* $(CURRENT)/sites/default/files/
 
 rollback:
-	@mv current rollbacked
-	@mv old current
+	@mv $(CURRENT) rollbacked
+	@mv $(OLD) $(CURRENT)
 
 clear:
 	@echo "Clearing caches using drush..."
