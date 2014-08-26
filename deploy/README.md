@@ -26,11 +26,11 @@ Now everyone in your team can deploy. And rollback.
 ```bash
 ➜  myServer  tree
 .
-├── [me           2237]  Makefile                                     <-- This is where the magic happens.
-├── [me             55]  current -> releases/2014-07-04--16-23-10     <-- your Apache2 vhost 'DocRoot', stable path
-├── [me             55]  old -> releases/2014-07-01--11-10-50         <-- rollback-able recent release
-├── [me            170]  releases                                     <-- all releases
-└── [me            170]  uploads                                      <-- shared, cross-releases folder
+├── [me  2237]  Makefile                         <-- This is where the magic happens.
+├── [me    55]  current -> releases/2014-07-04   <-- your Apache2 vhost 'DocRoot'
+├── [me    55]  old -> releases/2014-07-01       <-- rollback-able recent release
+├── [me   170]  releases                         <-- all releases
+└── [me   170]  uploads                          <-- shared, cross-releases folder
 ➜  myServer
 ```
 
