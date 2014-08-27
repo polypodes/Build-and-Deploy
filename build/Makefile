@@ -39,7 +39,7 @@ vendor/autoload.php:
 	@composer install --optimize-autoloader
 
 .git/hook/pre-commit:
-	@curl -s -o .git/hooks/pre-commit https://gist.githubusercontent.com/ronanguilloux/11f6a788358577474ab4/raw
+	@curl -s -o .git/hooks/pre-commit https://raw.githubusercontent.com/polypodes/Build-and-Deploy/master/hooks/pre-commit
 	@chmod +x .git/hooks/pre-commit
 
 ############################################################################
