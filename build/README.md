@@ -39,18 +39,18 @@ This creates the database, its schema, add the basics data required by your appl
 
 ## No commit without a little quality check
 
-If your source code is versioned using Git, this Makefile proposes an on-the-fly source code check attached to the git pre-commit action: it's called a _hook_, and the Makefile sets it up:
+If your source code is versioned using Git, this Makefile proposes an on-the-fly source code check attached to the git pre-commit action: it's called a _hook_, and it's [Git native magic](http://git-scm.com/book/en/Customizing-Git-Git-Hooks):
 
 ```
 .git/hook/pre-commit:
-   	curl -o .git/hooks/pre-commit https://gist.githubusercontent.com/ronanguilloux/11f6a788358577474ab4/raw
+   	curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/polypodes/Build-and-Deploy/master/hooks/pre-commit
    	chmod +x .git/hooks/pre-commit
 ```
 
-Now each `git commit` command will first run this GIST file (now copied in your `git/hooks` dir) that will check your source
-code and deny/reject any commit attempd if your code remains ugly. You can add more check processes to this.
+Now each `git commit` command will first run this little shell script (now copied in your `git/hooks` dir) that will check your source code and deny/reject any commit attempd if your code remains ugly. You can easily add more check processes to this.
 
 Someone calls it 'quality facism'. Deal with it.
+
 
 ## Some useful Make tasks you'll love
 
