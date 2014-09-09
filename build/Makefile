@@ -143,9 +143,9 @@ quality: sniff dry-fix
 stats: quality
 	@echo "Some stats about code quality"
 	@bin/phploc src
-	@bin/pdepend src
 	@bin/phpcpd src
 	@bin/phpmd src text codesize,unusedcode
+	@bin/pdepend src
 
 update: vendor/autoload.php
 	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
