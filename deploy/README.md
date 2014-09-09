@@ -8,13 +8,13 @@ me@myserver$~: make release
 
 And it's done.
 
-### Classic workflow: release / scream / rollback / breath...
+### Classic workflow: release / scream / rollback / breath & find out the reason of a crash
 
-Working with your 'current' remain simple:
+- _releasing_ = keeping the current release, renaming it as an "old" one, then creating a new "current" release. In case of crash just after deploying the new release, symlinks come to the rescue !
+- _rollbacking_ = Using the "old" release symlink, your website quickly gets back on its feet. 
 
 ```bash
-me@myserver$~: make update
-me@myserver$~: make check
+me@myserver$~: make release
 me@myserver$~: make rollback
 ```
 
