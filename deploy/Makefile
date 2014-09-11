@@ -78,7 +78,7 @@ help:
 	@echo
 	@echo "${GREEN}Usual tasks:${RESETC}"
 	@echo
-	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make origin{RESETC}"
+	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make first{RESETC}"
 	@echo "\t* (clone) create a new release:\t\t\t${YELLOW}make release${RESETC}"
 	@echo "\t* (pull) update the current release:\t\t${YELLOW}make update${RESETC}"
 	@echo
@@ -93,7 +93,7 @@ help:
 ############################################################################
 # Usual tasks:
 
-origin: check
+first: check
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
@@ -116,6 +116,6 @@ update: check
 	@$(MAKE) done
 
 
-.PHONY: all check permissions switch rollback clear done hellp release update
+.PHONY: all check permissions switch rollback clear done hellp first release update
 # vim:ft=make
 #
