@@ -78,7 +78,7 @@ help:
 	@echo
 	@echo "${GREEN}Usual tasks:${RESETC}"
 	@echo
-	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make origine{RESETC}"
+	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make origin{RESETC}"
 	@echo "\t* (clone) create a new release:\t\t\t${YELLOW}make release${RESETC}"
 	@echo "\t* (pull) update the current release:\t\t${YELLOW}make update${RESETC}"
 	@echo
