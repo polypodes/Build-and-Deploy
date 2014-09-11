@@ -45,6 +45,11 @@ check:
 permissions:
 	@chmod -R 775 $(CURRENT)
 	@chown -R $(WWWUSER):$(WWWGROUP) $(CURRENT)
+	
+create:
+    @echo "Create new release, for the first import of the project"
+    @mv $(NEW) $(RELEASES)/$(NOW)
+    @ln -s $(RELEASES)/$(NOW) $(CURRENT)
 
 switch:
 	@echo "Switching actual 'current' & 'old' symlinks using the new release..."
@@ -73,6 +78,7 @@ help:
 	@echo
 	@echo "${GREEN}Usual tasks:${RESETC}"
 	@echo
+	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make origine{RESETC}"
 	@echo "\t* (clone) create a new release:\t\t\t${YELLOW}make release${RESETC}"
 	@echo "\t* (pull) update the current release:\t\t${YELLOW}make update${RESETC}"
 	@echo
@@ -86,6 +92,14 @@ help:
 
 ############################################################################
 # Usual tasks:
+
+origin: check
+    @echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
+    @git clone -b $(BRANCH) $(REPO) $(NEW)
+    @cd $(NEW) && git config core.filemode false && cd $(PWD)
+    @$(MAKE) create
+    @$(MAKE) clear
+    @$(MAKE) done
 
 release: check
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
