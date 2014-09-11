@@ -52,6 +52,7 @@ switch:
 	@mv $(CURRENT) $(OLD);
 	@mv $(NEW) $(RELEASES)/$(NOW)
 	@ln -s $(RELEASES)/$(NOW) $(CURRENT)
+	@cp -R $(OLD)/sites/default/settings.php $(CURRENT)/sites/default/
 	@cp -R $(OLD)/sites/default/files/* $(CURRENT)/sites/default/files/
 
 rollback:
