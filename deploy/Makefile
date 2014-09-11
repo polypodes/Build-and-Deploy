@@ -47,9 +47,9 @@ permissions:
 	@chown -R $(WWWUSER):$(WWWGROUP) $(CURRENT)
 	
 create:
-    @echo "Create new release, for the first import of the project"
-    @mv $(NEW) $(RELEASES)/$(NOW)
-    @ln -s $(RELEASES)/$(NOW) $(CURRENT)
+	@echo "Create new release, for the first import of the project"
+	@mv $(NEW) $(RELEASES)/$(NOW)
+	@ln -s $(RELEASES)/$(NOW) $(CURRENT)
 
 switch:
 	@echo "Switching actual 'current' & 'old' symlinks using the new release..."
@@ -94,12 +94,12 @@ help:
 # Usual tasks:
 
 origin: check
-    @echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
-    @git clone -b $(BRANCH) $(REPO) $(NEW)
-    @cd $(NEW) && git config core.filemode false && cd $(PWD)
-    @$(MAKE) create
-    @$(MAKE) clear
-    @$(MAKE) done
+	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
+	@git clone -b $(BRANCH) $(REPO) $(NEW)
+	@cd $(NEW) && git config core.filemode false && cd $(PWD)
+	@$(MAKE) create
+	@$(MAKE) clear
+	@$(MAKE) done
 
 release: check
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
