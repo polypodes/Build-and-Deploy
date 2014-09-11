@@ -7,6 +7,7 @@
 # Usage:
 
 # me@myserver$~: make help
+# me@myserver$~: make first
 # me@myserver$~: make release
 # me@myserver$~: make rollback
 # me@myserver$~: make update
