@@ -126,6 +126,7 @@ update: check
 	@$(MAKE) done
 
 
-.PHONY: all check permissions switch rollback clear done hellp first release update
+.PHONY: all check permissions switch rollback clear done
+.PHONY: help first release update robot unrobot
 # vim:ft=make
 #
