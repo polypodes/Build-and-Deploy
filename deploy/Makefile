@@ -22,6 +22,7 @@
 PWD := $(shell pwd)
 RELEASES := $(PWD)/releases
 CURRENT := $(PWD)/current
+WEB := $(PWD)/current/web
 OLD := $(PWD)/old
 NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
 NEW := $(RELEASES)/NEW
@@ -68,6 +69,14 @@ rollback:
 clear:
 	@echo "Clearing caches using drush..."
 #	@drush cc all
+
+robot:
+	@echo "User-agent: *" > $(WEB)/robots.txt
+	@echo "Disallow: " >> $(WEB)/robots.txt
+
+unrobot:
+	@echo "User-agent: *" > $(WEB)/robots.txt
+	@echo "Disallow: /" >> $(WEB)/robots.txt
 
 done:
 	@echo
