@@ -21,6 +21,7 @@
 PWD         := $(shell pwd)
 VENDOR_PATH := $(PWD)/vendor
 BIN_PATH    := $(PWD)/bin
+WEB_PATH    := $(PWD)/web
 NOW         := $(shell date +%Y-%m-%d--%H-%M-%S)
 REPO        := "https://github.com/..."
 BRANCH      := 'master'
@@ -155,6 +156,14 @@ update: vendor/autoload.php
 	@php app/console cache:clear --env=prod --no-debug
 	@php app/console cache:clear --env=dev
 
+robot:
+	@echo "User-agent: *" > $(WEB_PATH)/robots.txt
+	@echo "Disallow: " >> $(WEB_PATH)/robots.txt
+
+unrobot:
+	@echo "User-agent: *" > $(WEB_PATH)/robots.txt
+	@echo "Disallow: /" >> $(WEB_PATH)/robots.txt
+
 done:
 	@echo
 	@echo "${GREEN}Done.${RESETC}"
@@ -182,5 +191,5 @@ deploy: explain install done
 .PHONY: integration data fixtures help check all pull dropDb createDb
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
 .PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
-.PHONY: install reinstall test deploy update
+.PHONY: install reinstall test deploy update robot unrobot
 # vim:ft=make
