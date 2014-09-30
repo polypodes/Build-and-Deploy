@@ -2,7 +2,7 @@
 # Makefile
 # Les Polypodes, 2014-06-25 12:44
 # Licence: MIT
-# Source: https://github.com/polypodes/Deploy/blob/master/Drupal7/Makefile
+# Source: https://github.com/polypodes/Build-and-Deploy/blob/master/deploy/Makefile
 
 # Usage:
 
