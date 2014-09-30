@@ -19,6 +19,10 @@
 
 # some lines may be useless for now, but these are nice tricks:
 PWD         := $(shell pwd)
+# Retrieve db connection params, triming white spaces
+DB_USER	    := $(shell cat app/config/parameters.yml | grep 'database_user' | sed 's/database_user: //' | sed 's/^ *//;s/ *$$//')
+DB_PASSWORD := $(shell cat app/config/parameters.yml | grep 'database_password' | sed 's/database_password: //' | sed 's/null//' | sed 's/^ *//;s/ *$$//')
+DB_NAME     := $(shell cat app/config/parameters.yml | grep 'database_name' | sed 's/database_name: //' | sed 's/^ *//;s/ *$$//')
 VENDOR_PATH := $(PWD)/vendor
 BIN_PATH    := $(PWD)/bin
 WEB_PATH    := $(PWD)/web
@@ -51,6 +55,14 @@ integration:
 	@cd integration
 	@gulp build
 	@cd ../
+	
+dumps:
+	@echo "Creating dump folder for SQL exports..."
+	@mkdir ./dumps
+
+mysqldump: dumps
+	@echo "Dumping existing db into ./dumps ..."
+	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
 
 data: vendor/autoload.php
 	@echo "Install initial datas..."
@@ -82,7 +94,7 @@ pull:
 	@git pull origin $(BRANCH)
 
 
-dropDb: vendor/autoload.php
+dropDb: vendor/autoload.php mysqldump
 	@echo
 	@echo "Drop database..."
 	@php app/console doctrine:database:drop --force
@@ -93,7 +105,7 @@ createDb: vendor/autoload.php
 	@php app/console doctrine:database:create
 	@php app/console doctrine:schema:update --force
 
-schemaDb: vendor/autoload.php
+schemaDb: vendor/autoload.php mysqldump
 	@echo
 	@echo "Configure database schema..."
 	@php app/console doctrine:schema:update --force
@@ -188,7 +200,7 @@ deploy: explain install done
 ############################################################################
 # .PHONY tasks list
 
-.PHONY: integration data fixtures help check all pull dropDb createDb
+.PHONY: integration data fixtures help check all pull dropDb createDb myqldump
 .PHONY: schemaDb assets clear explain behavior unit codecoverage 
 .PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy update robot unrobot
