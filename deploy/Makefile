@@ -19,22 +19,26 @@
 ############################################################################
 # Vars
 
-PWD := $(shell pwd)
-RELEASES := $(PWD)/releases
-CURRENT := $(PWD)/current
-WEB := $(PWD)/current/web
-OLD := $(PWD)/old
-NOW := $(shell date +%Y-%m-%d--%H-%M-%S)
-NEW := $(RELEASES)/NEW
-REPO := "https://github.com/polypodes/Deploy.git"
-BRANCH := 'master'
+PWD         := $(shell pwd)
+RELEASES    := $(PWD)/releases
+CURRENT     := $(PWD)/current
+WEB         := $(PWD)/current/web
+OLD         := $(PWD)/old
+NOW         := $(shell date +%Y-%m-%d--%H-%M-%S)
+NEW         := $(RELEASES)/NEW
+REPO        := "https://github.com/polypodes/Deploy.git"
+BRANCH      := 'master'
+# Retrieve db connection params, triming white spaces
+DB_USER	    := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_user' | sed 's/database_user: //' | sed 's/^ *//;s/ *$$//')
+DB_PASSWORD := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_password' | sed 's/database_password: //' | sed 's/null//' | sed 's/^ *//;s/ *$$//')
+DB_NAME     := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_name' | sed 's/database_name: //' | sed 's/^ *//;s/ *$$//')
 # Linux user & group
-WWWUSER := myLinuxUser
-WWWGROUP := myLinuxGroup
+WWWUSER     := myLinuxUser
+WWWGROUP    := myLinuxGroup
 # Colors
-YELLOW := $(shell tput bold ; tput setaf 3)
-GREEN := $(shell tput bold ; tput setaf 2)
-RESETC := $(shell tput sgr0)
+YELLOW      := $(shell tput bold ; tput setaf 3)
+GREEN       := $(shell tput bold ; tput setaf 2)
+RESETC      := $(shell tput sgr0)
 
 all: check help
 
@@ -78,6 +82,14 @@ unrobot:
 	@echo "User-agent: *" > $(WEB)/robots.txt
 	@echo "Disallow: /" >> $(WEB)/robots.txt
 
+dumps:
+	@echo "Creating dump folder for SQL exports..."
+	@mkdir ./dumps
+
+mysqldump: dumps
+	@echo "dumping existing db into ./dumps ..."
+	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
+
 done:
 	@echo
 	@ls -la
@@ -111,7 +123,7 @@ first: check
 	@$(MAKE) clear
 	@$(MAKE) done
 
-release: check
+release: check mysqldump
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
@@ -119,7 +131,7 @@ release: check
 	@$(MAKE) clear
 	@$(MAKE) done
 
-update: check
+update: check mysqldump
 	@echo "git-pulling sources using $(BRANCH) branch..."
 	@cd $(CURRENT) && git pull origin $(BRANCH) && cd $(PWD)
 	@$(MAKE) clear
@@ -127,6 +139,6 @@ update: check
 
 
 .PHONY: all check permissions switch rollback clear done
-.PHONY: help first release update robot unrobot
+.PHONY: help first release update robot unrobot mysqldump
 # vim:ft=make
 #
