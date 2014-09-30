@@ -2,7 +2,7 @@
 # Makefile
 # Les Polypodes, 2014-08-06 15:41
 # Licence: MIT
-# Source: https://github.com/polypodes/Deploy/blob/master/Symfony2/Makefile
+# Source: https://github.com/polypodes/Build-and-Deploy/blob/master/build/Makefile
 
 # Usage:
 
