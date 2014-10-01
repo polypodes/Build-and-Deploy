@@ -55,7 +55,7 @@ integration:
 	@cd integration
 	@gulp build
 	@cd ../
-	
+
 dumps:
 	@echo "Creating dump folder for SQL exports..."
 	@mkdir ./dumps
@@ -65,12 +65,12 @@ mysqldump: dumps
 	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
 
 data: vendor/autoload.php
-	@echo "Install initial datas..."
-	@./console dbal:data:initialize --purge
+#	@echo "Install initial datas..."
+#	@php app/console dbal:data:initialize --purge
 
 fixtures: vendor/autoload.php
-	@echo "Install fixtures in db..."
-	@./console dbal:fixtures:load --purge
+#	@echo "Install fixtures in db..."
+#	@php app/console dbal:fixtures:load --purge
 
 ############################################################################
 # Generic sf2 tasks:
@@ -89,7 +89,7 @@ help:
 
 check:
 	@php app/check.php
-	
+
 pull:
 	@git pull origin $(BRANCH)
 
@@ -147,6 +147,7 @@ dry-fix:
 	@bin/php-cs-fixer fix . --config=sf23 --dry-run -vv
 
 cs-fix:
+	@bin/phpcbf --standard=PSR2 src
 	@bin/php-cs-fixer fix . --config=sf23 -vv
 
 #quality must remain quiet, as far as it's used in a pre-commit hook validation
@@ -201,7 +202,7 @@ deploy: explain install done
 # .PHONY tasks list
 
 .PHONY: integration data fixtures help check all pull dropDb createDb myqldump
-.PHONY: schemaDb assets clear explain behavior unit codecoverage 
+.PHONY: schemaDb assets clear explain behavior unit codecoverage
 .PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
 .PHONY: install reinstall test deploy update robot unrobot
 # vim:ft=make
