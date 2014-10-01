@@ -1,6 +1,9 @@
 Deployment made simple
 ======================
 
+This Makefile is 100% _devops_ oriented :
+
+
 ```bash
 me@myserver$~: make release
 
