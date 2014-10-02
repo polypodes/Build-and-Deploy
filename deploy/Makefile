@@ -29,9 +29,9 @@ NEW         := $(RELEASES)/NEW
 REPO        := "https://github.com/polypodes/Deploy.git"
 BRANCH      := 'master'
 # Retrieve db connection params, triming white spaces
-DB_USER	    := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_user' | sed 's/database_user: //' | sed 's/^ *//;s/ *$$//')
-DB_PASSWORD := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_password' | sed 's/database_password: //' | sed 's/null//' | sed 's/^ *//;s/ *$$//')
-DB_NAME     := $(shell cat $(CURRENT)/app/config/parameters.yml | grep 'database_name' | sed 's/database_name: //' | sed 's/^ *//;s/ *$$//')
+DB_USER	    := $(shell if [ -f app/config/parameters.yml ] ; then cat app/config/parameters.yml | grep 'database_user' | sed 's/database_user: //' | sed 's/^ *//;s/ *$$//' ; fi)
+DB_PASSWORD := $(shell if [ -f app/config/parameters.yml ] ; then cat app/config/parameters.yml | grep 'database_password' | sed 's/database_password: //' | sed 's/null//' | sed 's/^ *//;s/ *$$//' ; fi)
+DB_NAME     := $(shell if [ -f app/config/parameters.yml ] ; then cat app/config/parameters.yml | grep 'database_name' | sed 's/database_name: //' | sed 's/^ *//;s/ *$$//' ; fi)
 # Linux user & group
 WWWUSER     := myLinuxUser
 WWWGROUP    := myLinuxGroup
