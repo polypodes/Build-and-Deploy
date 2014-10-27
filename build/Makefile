@@ -4,6 +4,21 @@
 # Licence: MIT
 # Source: https://github.com/polypodes/Build-and-Deploy/blob/master/build/Makefile
 
+# To enable this quality-related tasks, add these dependencies to your composer.json: 
+# they'll be available in the ./bin dir :
+#
+#    "require-dev": {
+#	(...)
+#        "phpunit/phpunit":                          "~3.7",
+#        "squizlabs/php_codesniffer":                "2.0.x-dev",
+#        "sebastian/phpcpd":                         "*",
+#        "phploc/phploc" :                           "*",
+#        "phpmd/phpmd" :                             "2.0.*",
+#        "pdepend/pdepend" :                         "2.0.*",
+#        "fabpot/php-cs-fixer":                      "@stable"
+#    }
+
+
 # Usage:
 
 # me@myserver$~: make help
