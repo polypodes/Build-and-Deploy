@@ -38,6 +38,11 @@ YELLOW      := $(shell tput bold ; tput setaf 3)
 GREEN       := $(shell tput bold ; tput setaf 2)
 RESETC      := $(shell tput sgr0)
 
+# Custom MAKE options
+ifndef VERBOSE
+  MAKEFLAGS += --no-print-directory
+endif
+
 # `make`command will run this default task set:
 all: check help
 
@@ -50,7 +55,7 @@ check:
 permissions:
 	@chmod -R 775 $(CURRENT)
 	@chown -R $(WWWUSER):$(WWWGROUP) $(CURRENT)
-	
+
 create:
 	@echo "Creating the very first release"
 	@mv $(NEW) $(RELEASES)/$(NOW)
@@ -89,6 +94,10 @@ mysqldump: dumps
 	@echo "dumping existing db into ./dumps ..."
 	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
 
+clone:
+	@git clone -b $(BRANCH) $(REPO) $(NEW)
+	@cd $(NEW) && git config core.filemode false && cd $(PWD)
+
 done:
 	@echo
 	@ls -la
@@ -105,7 +114,7 @@ help:
 	@echo
 	@echo "${GREEN}Other specific tasks:${RESETC}"
 	@echo
-	@echo "\t* display this help message:\t\t\t${YELLOW}make help${RESETC}"	
+	@echo "\t* display this help message:\t\t\t${YELLOW}make help${RESETC}"
 	@echo "\t* (mkdir) check dirs structure:\t\t\t${YELLOW}make check${RESETC}"
 	@echo "\t* (rm) clear cache:\t\t\t\t${YELLOW}make clear${RESETC}"
 	@echo "\t* (chown+chmod) set up files/dirs permissions:\t${YELLOW}make permissions${RESETC}"
@@ -117,16 +126,14 @@ help:
 
 init: check
 	@echo "Git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
-	@git clone -b $(BRANCH) $(REPO) $(NEW)
-	@cd $(NEW) && git config core.filemode false && cd $(PWD)
+	@$(MAKE) clone
 	@$(MAKE) create
 	@$(MAKE) clear
 	@$(MAKE) done
 
 release: check mysqldump
 	@echo "Git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
-	@git clone -b $(BRANCH) $(REPO) $(NEW)
-	@cd $(NEW) && git config core.filemode false && cd $(PWD)
+	@$(MAKE) clone
 	@$(MAKE) switch
 	@$(MAKE) clear
 	@$(MAKE) done
