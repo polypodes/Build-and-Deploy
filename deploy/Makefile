@@ -5,16 +5,13 @@
 # Source: https://github.com/polypodes/Build-and-Deploy/blob/master/deploy/Makefile
 
 # Usage:
-
-# me@myserver$~: make help
-# me@myserver$~: make init
-# me@myserver$~: make release
-# me@myserver$~: make rollback
-# me@myserver$~: make update
-# me@myserver$~: make check
-# etc.
-
-
+#
+# 	make help
+# 	make init
+# 	make release
+# 	make rollback
+# 	make update
+# 	make check
 
 ############################################################################
 # Vars
@@ -108,6 +105,7 @@ help:
 	@echo
 	@echo "${GREEN}Other specific tasks:${RESETC}"
 	@echo
+	@echo "\t* display this help message:\t\t\t${YELLOW}make help${RESETC}"	
 	@echo "\t* (mkdir) check dirs structure:\t\t\t${YELLOW}make check${RESETC}"
 	@echo "\t* (rm) clear cache:\t\t\t\t${YELLOW}make clear${RESETC}"
 	@echo "\t* (chown+chmod) set up files/dirs permissions:\t${YELLOW}make permissions${RESETC}"
