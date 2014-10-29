@@ -94,6 +94,9 @@ mysqldump: dumps
 	@echo "dumping existing db into ./dumps ..."
 	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
 
+mysqlinfo:
+	@echo "mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME}"
+
 clone:
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
@@ -146,6 +149,6 @@ update: check mysqldump
 
 
 .PHONY: all check permissions switch rollback clear done
-.PHONY: help init clone release update robot unrobot mysqldump
+.PHONY: help init clone release update robot unrobot mysqldump mysqlinfo
 # vim:ft=make
 #
