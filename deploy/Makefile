@@ -146,6 +146,6 @@ update: check mysqldump
 
 
 .PHONY: all check permissions switch rollback clear done
-.PHONY: help init release update robot unrobot mysqldump
+.PHONY: help init clone release update robot unrobot mysqldump
 # vim:ft=make
 #
