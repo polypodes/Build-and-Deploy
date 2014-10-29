@@ -100,8 +100,8 @@ help:
 	@echo
 	@echo "${GREEN}Usual tasks:${RESETC}"
 	@echo
-	@echo "\t* (clone) create the first release:\t\t\t${YELLOW}make first{RESETC}"
-	@echo "\t* (clone) create a new release:\t\t\t${YELLOW}make release${RESETC}"
+	@echo "\t* (clone) create the initial release:\t\t${YELLOW}make init${RESETC}"
+	@echo "\t* (clone) add a new, up-to-date release:\t\t\t${YELLOW}make release${RESETC}"
 	@echo "\t* (pull) update the current release:\t\t${YELLOW}make update${RESETC}"
 	@echo
 	@echo "${GREEN}Other specific tasks:${RESETC}"
@@ -115,7 +115,7 @@ help:
 ############################################################################
 # Usual tasks:
 
-first: check
+init: check
 	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
