@@ -55,7 +55,7 @@ permissions:
 	@chown -R $(WWWUSER):$(WWWGROUP) $(CURRENT)
 	
 create:
-	@echo "Create new release, for the first import of the project"
+	@echo "Creating the very first release"
 	@mv $(NEW) $(RELEASES)/$(NOW)
 	@ln -s $(RELEASES)/$(NOW) $(CURRENT)
 
@@ -118,7 +118,7 @@ help:
 # Usual tasks:
 
 init: check
-	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
+	@echo "Git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
 	@$(MAKE) create
@@ -126,7 +126,7 @@ init: check
 	@$(MAKE) done
 
 release: check mysqldump
-	@echo "git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
+	@echo "Git-cloning sources using ${GREEN}$(BRANCH)${RESETC} branch..."
 	@git clone -b $(BRANCH) $(REPO) $(NEW)
 	@cd $(NEW) && git config core.filemode false && cd $(PWD)
 	@$(MAKE) switch
@@ -134,13 +134,13 @@ release: check mysqldump
 	@$(MAKE) done
 
 update: check mysqldump
-	@echo "git-pulling sources using $(BRANCH) branch..."
+	@echo "Git-pulling sources using $(BRANCH) branch..."
 	@cd $(CURRENT) && git pull origin $(BRANCH) && cd $(PWD)
 	@$(MAKE) clear
 	@$(MAKE) done
 
 
 .PHONY: all check permissions switch rollback clear done
-.PHONY: help first release update robot unrobot mysqldump
+.PHONY: help init release update robot unrobot mysqldump
 # vim:ft=make
 #
