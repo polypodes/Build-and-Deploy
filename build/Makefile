@@ -1,22 +1,22 @@
 #
 # Makefile
-# Les Polypodes, 2014-08-06 15:41
+# Les Polypodes, 2014
 # Licence: MIT
 # Source: https://github.com/polypodes/Build-and-Deploy/blob/master/build/Makefile
 
-# To enable this quality-related tasks, add these dependencies to your composer.json: 
+# To enable this quality-related tasks, add these dependencies to your composer.json:
 # they'll be available in the ./bin dir :
 #
 #    "require-dev": {
-#	(...)
-#        "phpunit/phpunit":                          "~3.7",
-#        "squizlabs/php_codesniffer":                "2.0.x-dev",
-#        "sebastian/phpcpd":                         "*",
-#        "phploc/phploc" :                           "*",
-#        "phpmd/phpmd" :                             "2.0.*",
-#        "pdepend/pdepend" :                         "2.0.*",
-#        "fabpot/php-cs-fixer":                      "@stable"
-#    }
+#	     (...)
+#        "phpunit/phpunit":             "~3.7",
+#        "squizlabs/php_codesniffer":   "2.0.x-dev",
+#        "sebastian/phpcpd":            "*",
+#        "phploc/phploc" :              "*",
+#        "phpmd/phpmd" :                "2.0.*",
+#        "pdepend/pdepend" :            "2.0.*",
+#        "fabpot/php-cs-fixer":         "@stable"
+#    },
 
 
 # Usage:
@@ -49,6 +49,11 @@ YELLOW      := $(shell tput bold ; tput setaf 3)
 GREEN       := $(shell tput bold ; tput setaf 2)
 RESETC      := $(shell tput sgr0)
 
+# Custom MAKE options
+ifndef VERBOSE
+  MAKEFLAGS += --no-print-directory
+endif
+
 ############################################################################
 # Mandatory tasks:
 
@@ -79,6 +84,9 @@ mysqldump: dumps
 	@echo "Dumping existing db into ./dumps ..."
 	@mysqldump --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} > dumps/${NOW}.sql 2>/dev/null
 
+mysqlinfo: dumps
+	@echo "mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME}"
+
 data: vendor/autoload.php
 #	@echo "Install initial datas..."
 #	@php app/console dbal:data:initialize --purge
@@ -92,8 +100,9 @@ fixtures: vendor/autoload.php
 
 help:
 	@echo "\n${GREEN}Usual tasks:${RESETC}\n"
-	@echo "\tTo install:\t\tmake (and then) make install"
-	@echo "\tTo update:\t\tmake update"
+	@echo "\tTo prepare install:\tmake"
+	@echo "\tTo install:\t\tmake install"
+	@echo "\tTo update from git:\tmake update"
 	@echo "\tTo reinstall:\t\tmake reinstall (will erase all your datas)\n\n"
 
 	@echo "${GREEN}Other specific tasks:${RESETC}\n"
@@ -177,12 +186,11 @@ stats: quality
 	@bin/pdepend src
 
 update: vendor/autoload.php
-	@echo "UPDATING using git pull origin $(BRANCH) + update db schema + rebuild prod cache..."
-	@echo "Note you can change the git remote repo username in .git/config"
-	@git pull origin $(BRANCH)
+	@$(MAKE) explain
+	@$(MAKE) pull
 	@$(MAKE) schemaDb
-	@php app/console cache:clear --env=prod --no-debug
-	@php app/console cache:clear --env=dev
+	@$(MAKE) clear
+	@$(MAKE) done
 
 robot:
 	@echo "User-agent: *" > $(WEB_PATH)/robots.txt
@@ -210,14 +218,11 @@ reinstall: dropDb install
 
 tests: reinstall fixtures behavior unit codecoverage
 
-deploy: explain install done
-
-
 ############################################################################
 # .PHONY tasks list
 
 .PHONY: integration data fixtures help check all pull dropDb createDb myqldump
 .PHONY: schemaDb assets clear explain behavior unit codecoverage
 .PHONY: continuous sniff dry-fix cs-fix quality stats deploy done prepareDb purgeDb
-.PHONY: install reinstall test deploy update robot unrobot
+.PHONY: install reinstall test update robot unrobot
 # vim:ft=make
