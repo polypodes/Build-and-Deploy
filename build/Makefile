@@ -177,13 +177,16 @@ cs-fix:
 #quality must remain quiet, as far as it's used in a pre-commit hook validation
 quality: sniff dry-fix
 
+build:
+	@mkdir -p build/pdepend
+
 # packagist-based dev tools to add to your composer.json. See http://phpqatools.org
-stats: quality
+stats: quality build
 	@echo "Some stats about code quality"
 	@bin/phploc src
 	@bin/phpcpd src
 	@bin/phpmd src text codesize,unusedcode
-	@bin/pdepend src
+	@bin/pdepend --summary-xml=build/pdepend/summary.xml --jdepend-chart=build/pdepend/jdepend.svg --overview-pyramid=build/pdepend/pyramid.svg src
 
 update: vendor/autoload.php
 	@$(MAKE) explain
