@@ -17,7 +17,7 @@ DEPLOY
 Your sysadmins will probably appreciate this:
 
 ```bash
-me@myserver$~: make release
+me@server$~: make release
 ```
 
 => a [Makefile to deploy](/deploy) web apps on a released-based dirs structure
