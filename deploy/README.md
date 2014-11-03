@@ -5,7 +5,7 @@ This Makefile is 100% _devops_ oriented :
 
 
 ```bash
-me@myserver$~: make release
+me@server$~: make release
 
 ```
 
@@ -17,8 +17,8 @@ And it's done.
 - _rollbacking_ = Using the "old" release symlink, your website quickly gets back on its feet. 
 
 ```bash
-me@myserver$~: make release
-me@myserver$~: make rollback
+me@server$~: make release
+me@server$~: make rollback
 ```
 
 Now everyone in your team can deploy. And rollback.
