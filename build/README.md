@@ -2,8 +2,8 @@
 
 
 ```bash
-me@local$~: make
-me@local$~: make install
+me@laptop$~: make
+me@laptop$~: make install
 ```
 
 And it's done.
