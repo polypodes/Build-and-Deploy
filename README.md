@@ -4,8 +4,8 @@ BUILD
 Your collegues need to be confortable with your dev environment:
 
 ```bash
-me@myserver$~: make
-me@myserver$~: make install
+me@laptop$~: make
+me@laptop$~: make install
 ```
 
 => a [Makefile to build](build/) PHP, Composer-based web apps
