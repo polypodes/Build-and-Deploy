@@ -2,6 +2,7 @@
 
 
 ```bash
+me@laptop$~: curl -O https://raw.githubusercontent.com/polypodes/Build-and-Deploy/master/build/Makefile
 me@laptop$~: make
 me@laptop$~: make install
 ```
