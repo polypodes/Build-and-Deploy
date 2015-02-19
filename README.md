@@ -45,6 +45,7 @@ Simple philosophy
 ### Related
 
 - [An introduction to GNU Make](http://www.gnu.org/software/make/manual/make.html#Introduction)
+- [A simple Makefile+Git deployment strategy for static sites](http://nicolasgallagher.com/simple-git-deployment-strategy-for-static-sites/)
 
 ### LICENSE
 
