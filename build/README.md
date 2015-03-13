@@ -82,7 +82,7 @@ To enable this quality-related tasks, add these dependencies to your `composer.j
 
 ```json
     "require-dev": {
-        "phpunit/phpunit":                          "~3.7",
+        "phpunit/phpunit":                          "4.5.*"",
         "squizlabs/php_codesniffer":                "2.0.x-dev",
         "sebastian/phpcpd":                         "*",
         "phploc/phploc" :                           "*",
